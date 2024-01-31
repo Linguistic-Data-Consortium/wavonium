@@ -14,6 +14,10 @@ module.exports = {
       parser: 'svelte-eslint-parser',
       parserOptions: {
         parser: '@typescript-eslint/parser'
+      },
+      indent: ['error', 4],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off'
       }
     }
   ]
