@@ -1,0 +1,171 @@
+require 'facets'
+
+class String
+  def in?(x)
+    x.include? self
+  end
+end
+
+def comp(x)
+  y = if x.in?(@b + @c)
+    "src/renderer/src/components/#{x.snakecase}.js"
+  else
+    "src/renderer/src/components/#{x}.svelte"
+  end
+  y.sub! 'channel_buffer', 'channel/buffer'
+  y
+end
+
+def wave(x)
+  y = "/Users/jdwright/rails_projects/worktrees/ua/webtrans-aws/app/javascript/waveform/#{x.snakecase}.svelte"
+  y.sub! 'waveform/', '' if x == 'Modal' or x == 'modal'
+  y.sub! 'svelte', 'js' if x.in?(@b + @c)
+  y.sub! 'channel_buffer', 'channel/buffer'
+  y
+end
+
+a = %w[
+  Waveform
+  HelpScreenMain
+  HelpScreenWaveform
+  HelpScreenInput
+  HelpScreenPlayback
+  HelpScreenServices
+  AddSad
+  AddAsr
+  UploadTranscript
+  DownloadTranscript
+  CloseKit
+  KeyboardIcon
+  Modal
+  DeleteAllConfirmModal
+  Settings
+  HelpScreen
+  HelpScreenPlaybackHtml
+  MiniScreenInput
+  Spinner
+  CreateTranscript
+]
+b = %w[
+  WaveformHelper
+  Keyboard
+]
+@b = b
+c = %w[
+  play
+  stores
+  times
+  sources_stores
+  buffer
+  cache
+  buttons
+  services
+  modification1
+  segments_helper
+  channel_buffer
+  parse_b
+  aws_helper
+  keyboard_helper
+  keys_waveform
+  download_transcript_helper
+  parse_sad_with_aws
+  parse_tsv
+  parse_tdf
+  parse_tsv2
+]
+@c = c
+(a+b).each do |x|
+  file comp(x) => wave(x) do |t|
+    y = File.read(t.source)
+    a.each do |z|
+      puts z
+      y.sub! /import #{z} from .+/, "import #{z} from './#{z}.svelte';"
+    end
+    b.each do |z|
+      y.sub! /import { #{z} } from .+/, "import { #{z} } from './#{z.snakecase}';"
+    end
+    y.sub! './work/buttons', './buttons'
+    y.gsub! /https:..cdn.jsdelivr.net.+ldcjs@[\d.]+/, 'ldcjs'
+    File.write t.name, y
+  end
+end
+
+
+(c).each do |x|
+  file comp(x) => wave(x) do |t|
+    y = File.read(t.source)
+    y.gsub! /https:..cdn.jsdelivr.net.+ldcjs@[\d.]+/, 'ldcjs'
+    File.write t.name, y
+  end
+end
+
+task :all => (a+b+c).map { |x| comp x }
+
+def comp2(x)
+  y = "src/renderer/src/components/#{x}"
+  y
+end
+
+def wave2(x)
+  y = "/Users/jdwright/rails_projects/worktrees/ua/webtrans-aws/app/javascript/waveform/#{x}"
+  y.sub! 'waveform/', '' if x == 'modal.svelte'
+  y
+end
+
+d = %w[
+add_asr.svelte
+add_sad.svelte
+aws_helper.js
+buffer.js
+buttons.js
+cache.js
+channel/buffer.js
+close_kit.svelte
+create_transcript.svelte
+delete_all_confirm_modal.svelte
+download_transcript.svelte
+download_transcript_helper.js
+help_screen.svelte
+help_screen_input.svelte
+help_screen_main.svelte
+help_screen_playback.svelte
+help_screen_playback_html.svelte
+help_screen_services.svelte
+help_screen_waveform.svelte
+keyboard.js
+keyboard_helper.js
+keyboard_icon.svelte
+keys_waveform.js
+mini_screen_input.svelte
+modal.svelte
+modification1.js
+parse_b.js
+parse_sad_with_aws.js
+parse_tdf.js
+parse_tsv.js
+parse_tsv2.js
+play.js
+segments_helper.js
+services.js
+settings.svelte
+sources_stores.js
+spinner.svelte
+stores.js
+times.js
+upload_transcript.svelte
+waveform.svelte
+waveform_helper.js
+]
+
+task :all2 do |t|
+  d.each do |x|
+    y = `diff #{wave2(x)} #{comp2(x)}`.lines
+    y = y.select { |x| x !~ /ldcjs|import (Modal|{ btn })/ }.join
+    if y.length > 12
+      puts x
+      puts y
+      puts
+    end
+  end
+end
+
