@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { request_animation_frame_loop_init } from 'ldcjs/src/request_animation_frame_loop'
-  import Waveform from "./Waveform.svelte";
+  import Waveform from "./waveform.svelte";
   import { sets3 } from './aws_helper';
   window.ldc = {};
   window.ldc.resources = {};
