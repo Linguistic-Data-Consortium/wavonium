@@ -1,13 +1,13 @@
 <script>
   import icons from './assets/icons.svg'
   import Versions from './components/Versions.svelte'
-  // import Main from './components/main.svelte';
+  import Main from './components/main.svelte';
 </script>
 
 <div class="container">
   <Versions />
 </div>
-<!-- <Main /> -->
+<Main />
 
 <style>
   .container {

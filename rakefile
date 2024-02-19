@@ -26,43 +26,20 @@ end
 
 a = %w[
   Waveform
-  HelpScreenMain
-  HelpScreenWaveform
-  HelpScreenInput
-  HelpScreenPlayback
-  HelpScreenServices
-  AddSad
-  AddAsr
-  UploadTranscript
-  DownloadTranscript
-  CloseKit
-  KeyboardIcon
-  Modal
-  DeleteAllConfirmModal
-  Settings
-  HelpScreen
-  HelpScreenPlaybackHtml
-  MiniScreenInput
   Spinner
-  CreateTranscript
 ]
 b = %w[
-  WaveformHelper
   Keyboard
 ]
 @b = b
 c = %w[
-  play
   stores
   times
   sources_stores
-  buffer
-  cache
   buttons
   services
   modification1
   segments_helper
-  channel_buffer
   parse_b
   aws_helper
   keyboard_helper
@@ -113,48 +90,25 @@ def wave2(x)
 end
 
 d = %w[
-add_asr.svelte
-add_sad.svelte
 aws_helper.js
-buffer.js
 buttons.js
-cache.js
-channel/buffer.js
-close_kit.svelte
-create_transcript.svelte
-delete_all_confirm_modal.svelte
-download_transcript.svelte
 download_transcript_helper.js
-help_screen.svelte
-help_screen_input.svelte
-help_screen_main.svelte
-help_screen_playback.svelte
-help_screen_playback_html.svelte
-help_screen_services.svelte
-help_screen_waveform.svelte
 keyboard.js
 keyboard_helper.js
-keyboard_icon.svelte
 keys_waveform.js
-mini_screen_input.svelte
-modal.svelte
 modification1.js
 parse_b.js
 parse_sad_with_aws.js
 parse_tdf.js
 parse_tsv.js
 parse_tsv2.js
-play.js
 segments_helper.js
 services.js
-settings.svelte
 sources_stores.js
 spinner.svelte
 stores.js
 times.js
-upload_transcript.svelte
 waveform.svelte
-waveform_helper.js
 ]
 
 task :all2 do |t|
@@ -162,7 +116,8 @@ task :all2 do |t|
     y = `diff #{wave2(x)} #{comp2(x)}`.lines
     y = y.select { |x| x !~ /ldcjs|import (Modal|{ btn })/ }.join
     if y.length > 12
-      puts x
+      puts "diff #{wave2(x)} #{comp2(x)}"
+      # puts x
       puts y
       puts
     end
