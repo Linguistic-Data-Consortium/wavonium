@@ -1,6 +1,6 @@
 {
   "name": "wavonium",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "An Electron application with Svelte and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -36,6 +36,7 @@
     "@types/node": "^18.19.5",
     "electron": "^28.1.1",
     "electron-builder": "^24.9.1",
+    "electron-builder-notarize": "^1.5.1",
     "electron-vite": "^2.0.0",
     "eslint": "^8.56.0",
     "eslint-plugin-svelte": "^2.35.1",
